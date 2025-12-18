@@ -119,6 +119,12 @@
                     "enum": [
                       "AirPurifier"
                     ]
+                  },
+                  {
+                    "title": "Water Valve / Sprinkler Timer",
+                    "enum": [
+                      "WaterValve"
+                    ]
                   }
                 ]
               },
@@ -215,7 +221,7 @@
                 "type": "integer",
                 "placeholder": "1",
                 "condition": {
-                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['Outlet', 'TWLight', 'RGBTWLight', 'SimpleDimmer','RGBTWOutlet'].includes(model.devices[arrayIndices].type);"
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['Outlet', 'TWLight', 'RGBTWLight', 'SimpleDimmer', 'RGBTWOutlet', 'WaterValve'].includes(model.devices[arrayIndices].type);"
                 }
               },
               "dpBrightness": {
@@ -507,6 +513,34 @@
                 "placeholder": 1,
                 "condition": {
                   "functionBody": "return model.devices && model.devices[arrayIndices] && ['SimpleBlinds'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "valveType": {
+                "type": "string",
+                "default": "IRRIGATION",
+                "oneOf": [
+                  {"title": "Generic", "enum": ["GENERIC"]},
+                  {"title": "Irrigation / Sprinkler", "enum": ["IRRIGATION"]},
+                  {"title": "Shower Head", "enum": ["SHOWER_HEAD"]},
+                  {"title": "Water Faucet", "enum": ["WATER_FAUCET"]}
+                ],
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['WaterValve'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "defaultDuration": {
+                "type": "integer",
+                "placeholder": "600",
+                "description": "Default timer duration in seconds (600 = 10 minutes)",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['WaterValve'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "noTimer": {
+                "type": "boolean",
+                "description": "Disable the HomeKit timer functionality",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['WaterValve'].includes(model.devices[arrayIndices].type);"
                 }
               }
             }
